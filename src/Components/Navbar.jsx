@@ -31,7 +31,7 @@ const Navbar = () => {
 
 const Avatar = ({data})=>{
   const {displayName, photoURL, email} = data || {}
-  console.log(photoURL)
+  // console.log(photoURL)
   return (
     <div className="avatar">
   <div className="w-[40px] rounded-full">
