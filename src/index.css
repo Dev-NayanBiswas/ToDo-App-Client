@@ -1,1 +1,14 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+    themes: light --default, retro, dark --prefersdark, nord;
+  }
+
+  /* nord */
+html{
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+::-webkit-scrollbar{
+    width: 2px;
+}
