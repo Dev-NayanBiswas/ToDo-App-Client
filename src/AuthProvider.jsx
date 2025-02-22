@@ -6,6 +6,7 @@ import {
     GoogleAuthProvider, 
     onAuthStateChanged, 
     } from "firebase/auth";
+import axios from "axios";
 
 const AuthContext = createContext(null);
 
@@ -37,6 +38,13 @@ function AuthProvider({children}){
           
           if(currentUser?.email){
               setUserData(currentUser);
+
+              axios.post(`/user/${currentUser.email}`,{
+                name: currentUser.displayName,
+                email:currentUser.email
+              }).then(res=>console.log(res.data))
+              .catch(error=>console.log(error.response || error.message))
+
               setLoading(false)
             }else{
               setUserData(null);
