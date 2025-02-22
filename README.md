@@ -29,14 +29,14 @@ It's a Simple drag and Drop ToDo app, where user can reorder, edit, delete or ad
 ***Steps***
 1. Clone Github repository in you local machine
     1. Client  
-        1.`git clone https://github.com/Dev-NayanBiswas/ToDo-App-Client.git`
-        2.`cd ToDo-App-Client`
-       1. then copy and paste Firebase Configs on `.env` file. . . 
-       2. on terminal `npm install`
-       3. on terminal `npm run dev`
+       1. `git clone https://github.com/Dev-NayanBiswas/ToDo-App-Client.git`
+       2. `cd ToDo-App-Client`
+       3.  then copy and paste Firebase Configs on `.env` file. . . 
+       4. on terminal `npm install`
+       5. 1. on terminal `npm run dev`
     2. Server  
-      1. `git clone https://github.com/Dev-NayanBiswas/ToDo-App-Server.git`
-      2. `cd ToDo-App-Server`
+       1. `git clone https://github.com/Dev-NayanBiswas/ToDo-App-Server.git`
+       2. `cd ToDo-App-Server`
        3. `MONGO_DB_URL : paste your MongoDB uri String here with credentials`
        4. `PORT : 5000`
        5. on terminal `npm install`
