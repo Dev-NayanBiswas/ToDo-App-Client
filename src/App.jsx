@@ -5,10 +5,11 @@ import { BsClipboard2Plus } from "react-icons/bs";
 import TaskColumn from "./Components/TaskColumn";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import LandingPage from "./Components/LandingPage";
 
 function App() {
   const queryClient = useQueryClient();
-  const { userData, loading } = useAuth();
+  const { userData, loading, googleLogin } = useAuth();
   const [activeAdd, setActiveAdd] = useState(false);
   const [active, setActive] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -89,6 +90,8 @@ function App() {
 
   return (
     <>
+    {
+      !userData?.email ? <LandingPage login={()=>googleLogin()}/> :
       <section className='flex justify-between flex-col'>
         <header className='flex justify-center items-center bg-base-300'>
           <Navbar />
@@ -152,6 +155,7 @@ function App() {
         </main>
         <footer className='flex justify-center items-center bg-base-300 h-[10vh]'></footer>
       </section>
+    }
     </>
   );
 }
