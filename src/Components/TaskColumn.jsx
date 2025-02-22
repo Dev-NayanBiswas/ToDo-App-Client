@@ -25,7 +25,7 @@ const TaskColumn = ({title, category, activeSetter, onDrop}) => {
             {
                 data?.result?.map((item, index)=><Fragment key={item._id}>
                     <TaskCard activeSetter={activeSetter} taskData={item} index={index}/>
-                    <DropArea onDrop={()=>onDrop(category, index%2 !== 0 && index+1)}/>
+                    <DropArea onDrop={() => onDrop(category, index + 1)}/>
                 </Fragment>
                 )
             }

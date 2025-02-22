@@ -4,14 +4,23 @@ import Navbar from "./Components/Navbar";
 import { BsClipboard2Plus } from "react-icons/bs";
 import TaskColumn from "./Components/TaskColumn";
 import axios from "axios";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function App() {
   const queryClient = useQueryClient();
   const { userData, loading } = useAuth();
   const [activeAdd, setActiveAdd] = useState(false);
   const [active, setActive] = useState(null);
-  const [tasks, setTasks] = useState([])
+  const [tasks, setTasks] = useState([]);
+
+  const initialState = {
+    title: "",
+    description: "",
+    stamp: Date.now(),
+    category: "ToDo",
+    position: 0,
+    email: userData?.email,
+  };
 
 
   useEffect(()=>{
@@ -20,27 +29,30 @@ function App() {
     .catch(error=>console.log(error.message))
   },[])
 
-  const [toDo, setToDo] = useState({
-    todoTitle: "",
-    desc: "",
-    stamp: Date.now(),
-    category: "ToDo",
-    position: 123,
-    email: userData?.email,
-  });
+  const [toDo, setToDo] = useState(initialState);
+
+
 
   if (!userData && loading) {
     return <Loader />;
   }
 
+
+
+
   const onDrop = (category, position) => {
     console.log(`${active} is going to place into ${category} and at the position ${position}`);
-    console.log(category)
+    // console.log(category)
+
+    const taskToMoveIndex = tasks.findIndex(task => task._id === active);
+    if(taskToMoveIndex === -1) return ;
 
     if(active === null || active === undefined) return ;
 
+    console.log(taskToMoveIndex);
 
-    const taskToMove = tasks.find(item => item._id === active);
+    const taskToMove = tasks[taskToMoveIndex];
+
     let updatedTasks = tasks.filter((item)=> item._id !== active);
     updatedTasks.splice(position,0, {
       ...taskToMove,
@@ -51,23 +63,32 @@ function App() {
     
     updatedTasks = updatedTasks.map((task, index) => ({
       ...task,
-      position: index%2=== 0 && index + 1,
+      position: index + 1,
     }));
     console.log(updatedTasks)
 
 
   axios.put("/tasks", {tasks:updatedTasks})
   .then(res=>{
-    queryClient.invalidateQueries(["ToDos"])
-    console.log(res.data)})
+    console.log(res.data)
+    queryClient.invalidateQueries(["ToDos"],{ refetchType: "active" })
+  })
   .catch(error=>console.log( error.response?.data || error.message))
   }
 
-  console.log(tasks)
+  const addTask = (e)=>{
+    e.preventDefault();
+    console.log(toDo);
+    if(toDo.title?.length && toDo.description?.length){
+      axios.post("/task", toDo)
+      .then(res=>queryClient.invalidateQueries(["ToDos"],{ refetchType: "active" }))
+      .catch(error=> console.log(error.response || error.message))
+    }
+    setToDo(initialState);
+  }
 
   return (
     <>
-      <h1>Active Card : {active}</h1>
       <section className='flex justify-between flex-col'>
         <header className='flex justify-center items-center bg-base-300'>
           <Navbar />
@@ -82,14 +103,19 @@ function App() {
               </button>
             ) : (
               <form
+              onSubmit={addTask}
                 className='flex justify-center items-center md:flex-row flex-col gap-2 w-11/12'
                 action=''>
                 <input
+                  onChange={e=>setToDo({...toDo, title:e.target.value})}
+                  defaultValue={toDo.title}
                   className='p-[6px] w-full border-success'
                   type='text'
                   placeholder='Title . . .'
                 />
                 <input
+                defaultValue={toDo.description}
+                onChange={e=>setToDo({...toDo, description:e.target.value})}
                   className='p-[6px] w-full border-success'
                   type='text'
                   placeholder='Description . . .'

@@ -3,7 +3,6 @@
     themes: light --default, retro, dark --prefersdark, nord;
   }
 
-  /* nord */
 html{
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
