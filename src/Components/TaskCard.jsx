@@ -51,7 +51,7 @@ console.log(res.data)})
     {
       editMode ? <section>
       <form
-                  className='flex justify-center items-center md:flex-row flex-col gap-2 w-11/12'
+                  className='flex justify-center items-center md:flex-row flex-col gap-2 w-11/12 my-3'
                   action=''>
                   <input
                     onChange={e=>setToDo({...toDo, title:e.target.value})}
